@@ -33,16 +33,12 @@ class AuthMethods {
           'bio' = bio,
           'followers' = [],
           'folowing' = [],
-
         });
-         res = 'success';
+         res = "success";
       }
-
     }catch(err){
       res = err.toString();
     }
     return res;
-
   }
-
 }
