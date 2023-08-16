@@ -5,6 +5,7 @@ publish_to: none
 version: 1.0.0+1
 environment:
   sdk: '>=3.0.3 <4.0.0'
+
 dependencies:
   firebase_auth: ^4.7.2
   firebase_core: ^2.15.0

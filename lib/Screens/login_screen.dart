@@ -43,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 textEditingController: _emailController,
               ),
               const SizedBox(height: 24,),
+              // password input
               TextFieldInput(
                 hinttext:'Enter your Password',
                 textInputType: TextInputType.text,
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPass: true,
               ),
               const SizedBox(height: 24,),
+              //log in button
               InkWell(
                 onTap: () {} ,
                 child: Container(

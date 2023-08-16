@@ -108,13 +108,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 textEditingController: _bioController,
               ),
               const SizedBox(height: 24,),
+              // signup button
               InkWell(
                 onTap: () async {
                   String res = await AuthMethods().signUpUser(
-                      email: _emailController,
-                      password: _passwordController,
-                      username: _usernameController,
-                      bio: _bioControllerbio,
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                      username: _usernameController.text,
+                      bio: _bioController.text,
                       file:_image!,
                   );
                   print(res);
@@ -139,15 +140,16 @@ class _SignupScreenState extends State<SignupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // dont have an account
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text("Don't have an account?"),
+                    child: const Text("Alredy have an account?"),
                   ),
                   GestureDetector(
                     onTap: () {} ,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text("Sign up", style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: const Text("Log in", style: TextStyle(fontWeight: FontWeight.bold),),
                     ),
                   ),
                 ],
