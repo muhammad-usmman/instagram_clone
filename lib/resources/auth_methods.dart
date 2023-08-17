@@ -22,12 +22,12 @@ class AuthMethods {
   }) async {
     String res = "Some error occured";
     try{
-      if(email.isNotEmpty || password.isNotEmpty || username.isNotEmpty || bio.isNotEmpty || file != null ){
+      if(email.isNotEmpty || password.isNotEmpty || username.isNotEmpty || bio.isNotEmpty  ){
         // register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
         print(cred.user!.uid);
 
-        StorageMethods().uploadImageToStorage('ProfilePics', file, false);
+       String photoUrl = await StorageMethods().uploadImageToStorage('ProfilePics', file, false);
 
         // add users to firebase
          await _firestore.collection('users').doc(cred.user!.uid).set({
@@ -37,10 +37,19 @@ class AuthMethods {
           'bio' : bio,
           'followers' : [],
           'folowing' : [],
-        });
+           'photoUrl' : photoUrl,
+        }
+        );
          res = "success";
       }
-    }catch(err){
+    }  on FirebaseAuthException catch(err) {
+      if(err.code == 'Invaid-email') {
+        res ='This Email is bady formatteed';
+      } else if(err.code == 'weak-password') {
+        res ='Password should be atleast 6 charecters';
+      }
+    }
+    catch(err){
       res = err.toString();
     }
     return res;
