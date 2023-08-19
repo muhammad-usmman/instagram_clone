@@ -32,6 +32,20 @@ class _SignupScreenState extends State<SignupScreen> {
     _bioController.dispose();
     _usernameController.dispose();
   }
+
+  void signUpUser() async {
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file:_image!,
+    );
+    if (res != 'success') {
+      showSnackBar(res, context);
+    }
+  }
+
    selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
@@ -110,16 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 24,),
               // signup button
               InkWell(
-                onTap: () async {
-                  String res = await AuthMethods().signUpUser(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      username: _usernameController.text,
-                      bio: _bioController.text,
-                      file:_image!,
-                  );
-                  print(res);
-                } ,
+                onTap: signUpUser,
                 child: Container(
                   child: Text('Sign up'),
                   width: double.infinity,
