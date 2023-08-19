@@ -5,21 +5,21 @@ class TextFieldInput extends StatelessWidget {
   final bool isPass;
   final String hinttext;
   final TextInputType textInputType;
+
   const TextFieldInput({
     Key? key,
     required this.textEditingController,
     required this.textInputType,
     required this.hinttext,
-     this.isPass = false,
-  }) : super(key : key);
+    this.isPass = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final inputBorder = OutlineInputBorder(
-      borderSide: Divider.createBorderSide(context)
-    );
+    final inputBorder =
+        OutlineInputBorder(borderSide: Divider.createBorderSide(context));
     return TextField(
-      controller: textEditingController ,
+      controller: textEditingController,
       decoration: InputDecoration(
         hintText: hinttext,
         border: inputBorder,
@@ -29,7 +29,7 @@ class TextFieldInput extends StatelessWidget {
         contentPadding: EdgeInsets.all(8),
       ),
       keyboardType: textInputType,
-      obscureText: isPass ,
+      obscureText: isPass,
     );
   }
 }
