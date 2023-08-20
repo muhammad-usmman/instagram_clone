@@ -51,6 +51,13 @@ class _SignupScreenState extends State<SignupScreen> {
       _isLoading = false;
     });
   }
+  void navigateToLogin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SignupScreen(),
+      ),
+    );
+  }
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
@@ -181,7 +188,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: const Text("Already have an account?"),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToLogin,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
