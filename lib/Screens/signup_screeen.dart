@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utilites/utils.dart';
 
-import '../Widgets/text_input_fied.dart';
+import '../Widgets/text_input_field.dart';
 import '../utilites/colors.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -79,7 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 color: primaryColor,
                 height: 64,
               ),
-              // circular widget to acceprt and show our file
+              // circular widget to accept and show our file
               const SizedBox(height: 64),
               Stack(
                 children: [
@@ -162,7 +162,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             color: primaryColor,
                           ),
                         )
-                      : Text('Sign up'),
+                      : const Text('Sign up'),
                 ),
               ),
               const SizedBox(
@@ -175,10 +175,10 @@ class _SignupScreenState extends State<SignupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // dont have an account
+                  // don't have an account
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text("Alredy have an account?"),
+                    child: const Text("Already have an account?"),
                   ),
                   GestureDetector(
                     onTap: () {},

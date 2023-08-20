@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram_clone/Widgets/text_input_fied.dart';
+import 'package:instagram_clone/Widgets/text_input_field.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utilites/colors.dart';
 import 'package:instagram_clone/utilites/utils.dart';

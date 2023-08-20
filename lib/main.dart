@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
           apiKey: 'AIzaSyAWqByAv1WSqI_ZdvEIJoUKz90E0dL3-Ww',
           appId: '1:363806902956:web:5b9a3e132e6b0964daed09',
           messagingSenderId: '363806902956',
@@ -37,9 +38,31 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-
-      // home: const ResponsiveLayout(webScreenLayout:WebScreenLayout(), mobileScreenLayout:MobileScreenLAyout() , ),
-      home: LoginScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              return const ResponsiveLayout(
+                webScreenLayout: WebScreenLayout(),
+                mobileScreenLayout: MobileScreenLAyout(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('${snapshot.error}'),
+              );
+            }
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
+            );
+          }
+          return const LoginScreen();
+        },
+      ),
     );
   }
 }
