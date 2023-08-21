@@ -1,12 +1,13 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utilites/utils.dart';
-
 import '../Widgets/text_input_field.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utilites/colors.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -44,13 +45,24 @@ class _SignupScreenState extends State<SignupScreen> {
       bio: _bioController.text,
       file: _image!,
     );
-    if (res != 'success') {
-      showSnackBar(res, context);
-    }
     setState(() {
       _isLoading = false;
     });
+
+    if (res != 'success') {
+      showSnackBar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLAyout(),
+          ),
+        ),
+      );
+    }
   }
+
   void navigateToLogin() {
     Navigator.of(context).push(
       MaterialPageRoute(
