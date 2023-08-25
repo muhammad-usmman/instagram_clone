@@ -1,5 +1,10 @@
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/utilites/colors.dart';
+import 'package:instagram_clone/utilites/utils.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
@@ -9,6 +14,30 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
+
+  Uint8List? _file;
+
+  _selectImage(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(title: const Text('Create a post'), children: [
+            SimpleDialogOption(
+              padding: EdgeInsets.all(20),
+              child: const Text('Take a photo'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                Uint8List file = await pickImage(ImageSource.camera);
+                setState(() {
+                  _file = file;
+                });
+              },
+
+            )
+          ]);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     // return  Center(
@@ -47,8 +76,34 @@ class _AddPostScreenState extends State<AddPostScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage('url'),
-              )
+                backgroundImage: NetworkImage(
+                    'https://images.unsplash.com/photo-1682687220211-c471118c9e92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.45,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Write a capton...',
+                    border: InputBorder.none,
+                  ),
+                  maxLines: 8,
+                ),
+              ),
+              SizedBox(
+                height: 45,
+                width: 45,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1682687220211-c471118c9e92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'),
+                      fit: BoxFit.fill,
+                      alignment: FractionalOffset.topCenter,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(),
             ],
           )
         ],
