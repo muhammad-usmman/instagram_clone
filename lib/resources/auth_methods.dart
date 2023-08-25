@@ -13,7 +13,7 @@ class AuthMethods {
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
     DocumentSnapshot snap =
-        await _firestore.collection('users').doc(currentUser.uid).get();
+    await _firestore.collection('users').doc(currentUser.uid).get();
     return model.User.fromSnap(snap);
   }
 
@@ -50,13 +50,13 @@ class AuthMethods {
         );
 
         await _firestore.collection('users').doc(cred.user!.uid).set(
-              user.toJason(),
-            );
+          user.toJason(),
+        );
         res = "success";
       }
     } on FirebaseAuthException catch (err) {
-      if (err.code == 'Invaid-email') {
-        res = 'This Email is bady formatteed';
+      if (err.code == 'Invalid-email') {
+        res = 'This Email is badly formateed';
       } else if (err.code == 'weak-password') {
         res = 'Password should be atleast 6 charecters';
       }
