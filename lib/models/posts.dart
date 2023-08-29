@@ -4,17 +4,17 @@ class Post {
   final String description;
   final String uid;
   final String username;
-  final String photoId;
-  final String datePublished;
-  final List postUrl;
-  final List profImage;
+  final String postId;
+  final  datePublished;
+  final String postUrl;
+  final String profImage;
   final likes;
 
   const Post({
     required this.description,
     required this.uid,
-    required this.photoId,
     required this.username,
+    required this.postId,
     required this.datePublished,
     required this.postUrl,
     required this.profImage,
@@ -23,10 +23,10 @@ class Post {
 
   Map<String, dynamic> toJason() => {
     "description": description,
-    "username": username,
     "uid": uid,
+    "username": username,
 
-    "photoId": photoId,
+    "postId": postId,
     "datePublished": datePublished,
     "postUrl": postUrl,
     "profImage": profImage,
@@ -36,14 +36,14 @@ class Post {
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Post(
-      username: snapshot['username'],
-      uid: snapshot['uid'],
       description: snapshot['description'],
-      photoId: snapshot['photoId'],
+      uid: snapshot['uid'],
+      username: snapshot['username'],
+      postId: snapshot['postId'],
       datePublished: snapshot['datePublished'],
       postUrl: snapshot['postUrl'],
-      profImage: ['profImage'],
-      likes: ['likes'],
+      profImage:snapshot ['profImage'],
+      likes: snapshot['likes'],
     );
   }
 }
