@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/Widgets/like_animation.dart';
+import 'package:instagram_clone/models/users.dart';
+import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/utilites/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class PostCard extends StatelessWidget {
   final snap;
@@ -9,6 +13,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
     return Container(
       color: mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(
@@ -81,23 +86,31 @@ class PostCard extends StatelessWidget {
             ),
           ),
           //Image Section
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            width: double.infinity,
-            child: Image.network(
-              snap['postUrl'],
-              fit: BoxFit.cover,
-            ),
+          Stack(  
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.35,
+                width: double.infinity,
+                child: Image.network(
+                  snap['postUrl'],
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
           ),
 
           //LIKE COMMENT SECTION
           Row(
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
+              LikeAnimation(
+                isAnimating: snap['likes'].contains(user.uid),
+                smallLike: true,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  ),
                 ),
               ),
               IconButton(
@@ -160,7 +173,7 @@ class PostCard extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: snap['description'],
+                          text:' ${snap['description']}',
                         ),
                       ],
                     ),
