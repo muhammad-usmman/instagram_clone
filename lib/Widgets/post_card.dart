@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/Widgets/like_animation.dart';
 import 'package:instagram_clone/models/users.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/utilites/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<UserProvider>(context).getUser;
@@ -93,12 +95,15 @@ class _PostCardState extends State<PostCard> {
           ),
           //Image Section
           GestureDetector(
-            onDoubleTap: () {
+            onDoubleTap: () async {
+              await FirestoreMethods().likePost(
+                  widget.snap['postid'], user.uid, widget.snap['likes']);
               setState(() {
                 isLikeAnimating = true;
               });
             },
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.35,
@@ -108,20 +113,22 @@ class _PostCardState extends State<PostCard> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                LikeAnimation(
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isLikeAnimating ? 0 : 1,
+                  child: LikeAnimation(
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(milliseconds: 400),
+                    onEnd: () {
+                      isLikeAnimating = false;
+                    },
                     child: Icon(
                       Icons.favorite,
                       color: Colors.white,
-                      size: 100,
+                      size: 120,
                     ),
-                    isAnimating: isLikeAnimating,
-                  duration: Duration(milliseconds: 400),
-                  onEnd: () {
-                      isLikeAnimating = true;
-                  },
-
+                  ),
                 ),
-
               ],
             ),
           ),
@@ -133,11 +140,14 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
+                  onPressed: () async {
+                    await FirestoreMethods().likePost(
+                        widget.snap['postid'], user.uid, widget.snap['likes']);
+                  },
+                  icon:  widget.snap['likes'].contains(user.uid) ? Icon(
                     Icons.favorite,
                     color: Colors.red,
-                  ),
+                  ): Icon(Icons.favorite_border,),
                 ),
               ),
               IconButton(
