@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/Screens/comment_screen.dart';
 import 'package:instagram_clone/Widgets/like_animation.dart';
 import 'package:instagram_clone/models/users.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
@@ -144,14 +145,22 @@ class _PostCardState extends State<PostCard> {
                     await FirestoreMethods().likePost(
                         widget.snap['postid'], user.uid, widget.snap['likes']);
                   },
-                  icon:  widget.snap['likes'].contains(user.uid) ? Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ): Icon(Icons.favorite_border,),
+                  icon: widget.snap['likes'].contains(user.uid)
+                      ? Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : Icon(
+                          Icons.favorite_border,
+                        ),
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentScreen(),
+                  ),
+                ),
                 icon: const Icon(
                   Icons.comment_outlined,
                 ),
