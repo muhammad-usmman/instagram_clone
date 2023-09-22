@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/Widgets/Comment_card.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/utilites/colors.dart';
 import 'package:provider/provider.dart';
 
-import '../Widgets/Comment_card.dart';
 import '../models/users.dart';
 import '../providers/user_provider.dart';
 
@@ -33,7 +34,26 @@ class _CommentScreenState extends State<CommentScreen> {
         backgroundColor: mobileBackgroundColor,
         title: const Text('Comments'),
       ),
-      body: CommentCard(),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .doc(widget.snap['postid'])
+            .collection('comments')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: (snapshot.data! as dynamic).docs.length,
+            itemBuilder: (context, index) => CommentCard(
+              snap : (snapshot.data! as dynamic).docs[index].data()
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kTextTabBarHeight,
@@ -68,6 +88,9 @@ class _CommentScreenState extends State<CommentScreen> {
                     user.username,
                     user.photoUrl,
                   );
+                  setState(() {
+                    _commentController.text = "";
+                  });
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

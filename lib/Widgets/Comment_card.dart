@@ -4,7 +4,8 @@ import 'package:instagram_clone/models/users.dart';
 import 'package:provider/provider.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key});
+  final snap;
+   CommentCard({super.key, required this.snap});
 
   @override
   State<CommentCard> createState() => _CommentCardState();
@@ -20,7 +21,7 @@ class _CommentCardState extends State<CommentCard> {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage('url'),
+            backgroundImage: NetworkImage(widget.snap['profilePic']),
             radius: 16,
           ),
           Expanded(
@@ -32,13 +33,13 @@ class _CommentCardState extends State<CommentCard> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'username',
+                          text: widget.snap['name'],
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         TextSpan(
-                          text: 'some decription to be put in later',
+                          text: ' ${widget.snap['text']}',
                         ),
                       ],
                     ),
