@@ -9,15 +9,17 @@ class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //upload post
-  Future<String> uploadPost(String description,
-      String uid,
-      Uint8List file,
-      String username,
-      String profImage,) async {
+  Future<String> uploadPost(
+    String description,
+    String uid,
+    Uint8List file,
+    String username,
+    String profImage,
+  ) async {
     String res = "some error occured";
     try {
       String photoUrl =
-      await StorageMethods().uploadImageToStorage('posts', file, true);
+          await StorageMethods().uploadImageToStorage('posts', file, true);
 
       String postId = const Uuid().v1();
 
@@ -32,8 +34,8 @@ class FirestoreMethods {
         likes: [],
       );
       _firestore.collection('posts').doc(postId).set(
-        post.toJason(),
-      );
+            post.toJason(),
+          );
       res = "success";
     } catch (err) {
       res = err.toString();
@@ -47,37 +49,49 @@ class FirestoreMethods {
         await _firestore.collection('posts').doc(postid).update({
           'likes': FieldValue.arrayRemove([uid])
         });
-
       } else {
         await _firestore.collection('posts').doc(postid).update({
           'likes': FieldValue.arrayUnion([uid])
         });
       }
     } catch (e) {
-      print(e.toString(),);
+      print(
+        e.toString(),
+      );
     }
   }
-  Future<void> postComment(String postId, String text, String uid, String name, String profiePic) async {
-      try{
-       if(text.isNotEmpty){
-         String commentId = const Uuid().v1();
-         await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).set({
-           'profilePic' : profiePic,
-           'name' : name,
-           'uid' : uid,
-           'text': text,
-           'commeentId': commentId,
-           'datePublished': DateTime.now(),
 
-         });
-       } else{
-         print('Text is Empty');
-       }
-
-      } catch(e){
-        print(e.toString());
+  Future<void> postComment(String postId, String text, String uid, String name,
+      String profiePic) async {
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'profilePic': profiePic,
+          'name': name,
+          'uid': uid,
+          'text': text,
+          'commeentId': commentId,
+          'datePublished': DateTime.now(),
+        });
+      } else {
+        print('Text is Empty');
       }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection('posts').doc('postId').delete();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
-
-

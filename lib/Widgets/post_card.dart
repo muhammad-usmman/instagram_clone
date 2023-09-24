@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class PostCard extends StatefulWidget {
   final snap;
 
-   PostCard({super.key, required this.snap});
+  PostCard({super.key, required this.snap});
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -28,18 +28,22 @@ class _PostCardState extends State<PostCard> {
     super.initState();
     getComments();
   }
+
   void getComments() async {
-  try{
-    QuerySnapshot snap =  await FirebaseFirestore.instance.collection('posts').doc(widget.snap['postsId']).collection('comments').get();
-    commentLen = snap.docs.length;
-  } catch(e) {
-    showSnackBar(e.toString(), context);
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postsId'])
+          .collection('comments')
+          .get();
+      commentLen = snap.docs.length;
+    } catch (err) {
+      showSnackBar(err.toString(), context);
+    }
+    setState(() {});
   }
-setState(() {
 
-});
-  }
-
+  @override
   Widget build(BuildContext context) {
     User user = Provider.of<UserProvider>(context).getUser;
     return Container(
@@ -95,7 +99,11 @@ setState(() {
                           children: ['Delete']
                               .map(
                                 (e) => InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    FirestoreMethods()
+                                        .deletePost(widget.snap['postId']);
+                                    Navigator.of(context).pop();
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12, horizontal: 16),
@@ -174,14 +182,13 @@ setState(() {
                     await FirestoreMethods().likePost(
                         widget.snap['postId'], user.uid, widget.snap['likes']);
                   },
-
                 ),
               ),
               IconButton(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => CommentScreen(
-                      snap: widget.snap ,
+                      snap: widget.snap,
                     ),
                   ),
                 ),
@@ -255,7 +262,7 @@ setState(() {
                     padding: const EdgeInsets.symmetric(
                       vertical: 4,
                     ),
-                    child:  Text(
+                    child: Text(
                       ' View All $commentLen comments',
                       style: TextStyle(
                         fontSize: 16,
