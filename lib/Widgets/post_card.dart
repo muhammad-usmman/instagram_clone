@@ -20,7 +20,7 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  bool isLikeAnimating = false;
+  bool isLikeAnimating = true;
   int commentLen = 0;
 
   @override
@@ -125,7 +125,10 @@ class _PostCardState extends State<PostCard> {
           GestureDetector(
             onDoubleTap: () async {
               await FirestoreMethods().likePost(
-                  widget.snap['postId'], user.uid, widget.snap['likes']);
+                widget.snap['postId'],
+                user.uid,
+                widget.snap['likes'],
+              );
               setState(() {
                 isLikeAnimating = true;
               });
@@ -214,7 +217,7 @@ class _PostCardState extends State<PostCard> {
             ],
           ),
 
-          // Description and COmments
+          // Description and Comments
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
