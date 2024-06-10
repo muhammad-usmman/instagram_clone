@@ -23,7 +23,7 @@ class FirestoreMethods {
 
       String postId = const Uuid().v1();
 
-      Post post = Post(
+      Post post = Post  (
         description: description,
         uid: uid,
         username: username,
